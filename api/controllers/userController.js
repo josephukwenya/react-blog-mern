@@ -25,6 +25,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
   } else {
     res.status(401).json("You can only update your account!");
   }
+  next();
 });
 
 // DELETE USER
