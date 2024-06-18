@@ -23,7 +23,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
     const { password, ...others } = updatedUser._doc;
     res.status(200).json(others);
   } else {
-    res.status(401).json("You can only update your account!");
+    res.status(401).json("You can only UPDATE your account!");
   }
 });
 
@@ -36,6 +36,8 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json("User has been deleted");
     next();
+  } else {
+    res.status(401).json("You can only DELETE your account!");
   }
 });
 
