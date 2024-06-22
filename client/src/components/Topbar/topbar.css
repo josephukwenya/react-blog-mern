@@ -3,7 +3,7 @@
 .topbar {
   width: 100%;
   height: 50px;
-  background-color: aqua;
+  background-color: #fff;
   position: sticky;
   top: 0;
   display: flex;
@@ -63,5 +63,5 @@
 }
 
 .topListItem:hover {
-  color: #555;
+  color: blue;
 }
