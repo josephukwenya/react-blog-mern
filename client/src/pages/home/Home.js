@@ -5,10 +5,12 @@ import "./home.css";
 
 export default function Home() {
   return (
-    <div className="home">
+    <>
       <Header />
-      <Posts />
-      <Sidebar />
-    </div>
+      <div className="home">
+        <Posts />
+        <Sidebar />
+      </div>
+    </>
   );
 }

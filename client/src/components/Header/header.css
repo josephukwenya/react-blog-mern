@@ -10,7 +10,7 @@
   color: #444;
 }
 
-.headerTitleSm {
+/* .headerTitleSm {
   position: absolute;
   top: 16.5%;
   font-size: 20px;
@@ -18,11 +18,11 @@
   background-color: darkblue;
   padding: 10px;
   border-radius: 10px;
-}
+} */
 
 .headerTitleLg {
   position: absolute;
-  top: 25%;
+  top: 45%;
   font-size: 100px;
   color: #fff;
 }
