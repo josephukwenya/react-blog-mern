@@ -59,10 +59,11 @@
 .topListItem {
   padding: 0 10px;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
+  color: #666;
 }
 
 .topListItem:hover {
-  color: blue;
+  color: teal;
 }
