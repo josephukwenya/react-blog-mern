@@ -7,10 +7,10 @@ export default function Topbar() {
   return (
     <div className="topbar">
       <div className="topRight">
-        <i class="topSocialIcon fa-brands fa-square-facebook"></i>
-        <i class="topSocialIcon fa-brands fa-square-instagram"></i>
-        <i class="topSocialIcon fa-brands fa-square-x-twitter"></i>
-        <i class="topSocialIcon fa-brands fa-linkedin"></i>
+        <i className="topSocialIcon fa-brands fa-square-facebook"></i>
+        <i className="topSocialIcon fa-brands fa-square-instagram"></i>
+        <i className="topSocialIcon fa-brands fa-square-x-twitter"></i>
+        <i className="topSocialIcon fa-brands fa-linkedin"></i>
       </div>
       <div className="topCenter">
         <ul className="topList">
@@ -62,7 +62,7 @@ export default function Topbar() {
             </li>
           </ul>
         )}
-        <i class="topSearchIcon fa-solid fa-magnifying-glass"></i>
+        <i className="topSearchIcon fa-solid fa-magnifying-glass"></i>
       </div>
     </div>
   );

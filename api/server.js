@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const dotenv = require("dotenv");
 const multer = require("multer");
 const morgan = require("morgan");
@@ -12,6 +13,12 @@ const categoriesRoute = require("./routes/categories");
 dotenv.config();
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    optionsSuccessStatus: 200,
+  })
+);
 
 // DB connection
 connectDB();
