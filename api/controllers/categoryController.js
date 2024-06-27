@@ -17,7 +17,7 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
   try {
     const category = await Category.find();
 
-    res.status(200).json({ success: true, category });
+    res.status(200).json(category);
   } catch (error) {
     console.log(error);
     next(res.status(404).json({ error }));
