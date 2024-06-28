@@ -1,34 +1,30 @@
+import { Link } from "react-router-dom";
 import "./post.css";
 
-export default function Post() {
+export default function Post({ post }) {
   return (
     <div className="post">
-      <img
-        className="postImg"
-        src="https://images.pexels.com/photos/7773744/pexels-photo-7773744.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-        alt="About-us"
-      />
+      {post.photo && (
+        <img className="postImg" src={post.photo} alt="About-us" />
+      )}
       <div className="postInfo">
         <div className="postCats">
-          <span className="postCat">Music</span>
-          <span className="postCat">Life</span>
+          {post.categories.map((c) => (
+            <span className="postCat" key={c}>
+              {c.name}
+            </span>
+          ))}
         </div>
-        <span className="postTitle">lorem lpson lorem lpson</span>
+        <Link className="link" to={`/post/${post._id}`}>
+          <span className="postTitle">{post.title}</span>
+        </Link>
         <hr />
 
-        <span className="postDate">1 hour ago</span>
+        <span className="postDate">
+          {new Date(post.createdAt).toDateString()}
+        </span>
       </div>
-      <p className="postDesc">
-        lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-        lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-        lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem. lorem lorem
-        lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-        lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-        lorem lorem lorem lorem lorem lorem lorem lorem. lorem lorem lorem lorem
-        lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-        lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-        lorem lorem lorem lorem lorem lorem.
-      </p>
+      <p className="postDesc">{post.desc}</p>
     </div>
   );
 }

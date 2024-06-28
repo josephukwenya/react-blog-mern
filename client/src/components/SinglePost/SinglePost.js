@@ -1,16 +1,29 @@
+import { Link, useLocation } from "react-router-dom";
 import "./singlePost.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function SinglePost() {
+  const [post, setPost] = useState({});
+  const location = useLocation();
+  const path = location.pathname.split("/")[2];
+
+  useEffect(() => {
+    const getPost = async () => {
+      const res = await axios.get(`/posts/${path}`);
+      setPost(res.data.post);
+    };
+    getPost();
+  }, [path]);
+
   return (
     <div className="singlePost">
       <div className="singlePostWrapper">
-        <img
-          src="https://images.pexels.com/photos/7773744/pexels-photo-7773744.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt=""
-          className="singlePostImg"
-        />
+        {post.photo && (
+          <img src={post.photo} alt="" className="singlePostImg" />
+        )}
         <h1 className="singlePostTitle">
-          Lorem lpson dolor sit amet
+          {post.title}
           <div className="singlePostEdit">
             <i className="singlePostIcon fa-regular fa-pen-to-square"></i>
             <i className="singlePostIcon fa-regular fa-trash-can"></i>
@@ -18,32 +31,16 @@ export default function SinglePost() {
         </h1>
         <div className="singlePostInfo">
           <span className="singlePostAuthor">
-            Author: <b>Joseph</b>
+            Author:
+            <Link className="link" to={`/?user=${post.username}`}>
+              <b>{post.username}</b>
+            </Link>
           </span>
-          <span className="singlePostDate">1 hour ago</span>
+          <span className="singlePostDate">
+            {new Date(post.createdAt).toDateString()}
+          </span>
         </div>
-        <p className="singlePostDesc">
-          Deserunt officia culpa eiusmod fugiat ut proident reprehenderit nisi
-          consequat pariatur esse sunt eiusmod. Velit duis do irure consequat
-          aliqua proident fugiat anim et ullamco. Officia officia elit Lorem
-          tempor. Aliqua velit elit id labore ad reprehenderit pariatur nostrud.
-          Dolore dolore aliqua consectetur in magna anim elit. Ex id occaecat
-          sunt fugiat occaecat exercitation sit labore. Incididunt incididunt
-          nisi quis elit in. Consequat commodo minim proident eiusmod do quis
-          Lorem nulla. Lorem commodo minim ut irure ipsum dolore amet fugiat non
-          labore officia ut laborum. Anim id Lorem dolor amet voluptate quis
-          mollit adipisicing esse ut do. Labore nostrud exercitation pariatur in
-          in cillum reprehenderit ipsum excepteur magna elit. In do consequat
-          ullamco sint ullamco consectetur exercitation nostrud. Aute ipsum sunt
-          ipsum irure velit consectetur. sunt fugiat occaecat exercitation sit
-          labore. Incididunt incididunt nisi quis elit in. Consequat commodo
-          minim proident eiusmod do quis Lorem nulla. Lorem commodo minim ut
-          irure ipsum dolore amet fugiat non labore officia ut laborum. Anim id
-          Lorem dolor amet voluptate quis mollit adipisicing esse ut do. Labore
-          nostrud exercitation pariatur in in cillum reprehenderit ipsum
-          excepteur magna elit. In do consequat ullamco sint ullamco consectetur
-          exercitation nostrud. Aute ipsum sunt ipsum irure velit consectetur.
-        </p>
+        <p className="singlePostDesc">{post.desc}</p>
       </div>
     </div>
   );
