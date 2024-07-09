@@ -1,74 +1,94 @@
 const Post = require("../models/Post");
 const asyncHandler = require("express-async-handler");
+const ErrorResponse = require("../utils/errorResponse");
 
 // CREATE POST
-exports.createPost = asyncHandler(async (req, res, next) => {
-  const newPost = await Post.create({
-    title: req.body.title,
-    desc: req.body.desc,
-    photo: req.body.photo,
-    username: req.body.username,
-    categories: req.body.categories,
-  });
-
-  const post = await newPost.save();
-
-  res.status(201).json({
-    success: true,
-    post,
-  });
-  next(res.status(404).json({ msg: "Something went wrong!" }));
-});
+exports.createPost = async (req, res, next) => {
+  const newPost = new Post(req.body);
+  try {
+    const savedPost = await newPost.save();
+    res.status(200).json({ savedPost });
+  } catch (err) {
+    next(err);
+  }
+};
 
 // UPDATE POST
-exports.updatePost = asyncHandler(async (req, res, next) => {
-  const post = await Post.findById(req.params.id);
-  if (post.username === req.body.username) {
-    const updatedPost = await Post.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
-
-    res.status(200).json({ success: true, updatedPost });
-  } else {
-    next(res.status(404).json({ msg: "You can only update your post" }));
+exports.updatePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (post.username === req.body.username) {
+      try {
+        const updatedPost = await Post.findByIdAndUpdate(
+          req.params.id,
+          {
+            $set: req.body,
+          },
+          { new: true }
+        );
+        res.status(200).json({ updatedPost });
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    } else {
+      res.status(401).json("You can update only your post!");
+    }
+  } catch (err) {
+    next(err);
   }
-});
+};
 
 // DELETE POST
-exports.deletePost = asyncHandler(async (req, res, next) => {
-  const post = await Post.findById(req.params.id);
-  if (post.username === req.body.username) {
-    await Post.delete();
-    res.status(200).json("Deleted");
-  } else {
-    next(res.status(404).json({ msg: "You can only delete your post" }));
+exports.deletePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (post.username === req.body.username) {
+      try {
+        await post.delete();
+        res.status(200).json("Post has been deleted...");
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    } else {
+      res.status(401).json("You can delete only your post!");
+    }
+  } catch (err) {
+    next(err);
   }
-});
+};
 
 // GET SINGLE POST
-exports.getPost = asyncHandler(async (req, res, next) => {
-  const post = await Post.findById(req.params.id);
+exports.getPost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id);
 
-  res.status(200).json({ post });
-  next(res.status(404).json({ msg: "Something went wrong!" }));
-});
+    if (!post) return next(new ErrorResponse(`Post NOT Found`, 404));
+
+    res.status(200).json({ post });
+  } catch (err) {
+    next(new ErrorResponse(`Post not found with ID of ${req.params.id}`, 404));
+  }
+};
 
 // GET ALL POSTS
-exports.getAllPosts = asyncHandler(async (req, res, next) => {
+exports.getAllPosts = async (req, res, next) => {
   const username = req.query.user;
   const catName = req.query.cat;
-
-  let posts;
-  if (username) {
-    posts = await Post.find({ username });
-  } else if (catName) {
-    posts = await Post.find({ categories: { $in: [catName] } });
-  } else {
-    posts = await Post.find();
+  try {
+    let posts;
+    if (username) {
+      posts = await Post.find({ username });
+    } else if (catName) {
+      posts = await Post.find({
+        categories: {
+          $in: [catName],
+        },
+      });
+    } else {
+      posts = await Post.find();
+    }
+    res.status(200).json({ posts });
+  } catch (err) {
+    next(err);
   }
-
-  res.status(200).json({ result: posts.length, posts });
-  next(res.status(404).json({ msg: "Something went wrong!" }));
-});
+};
